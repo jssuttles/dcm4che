@@ -280,6 +280,8 @@ public class StandardElementDictionary extends ElementDictionary {
 
     @Override
     public VR vrOf(int tag) {
+        if (tag == 0x00500065)
+            return VR.CS;
         if ((tag &amp; 0x0000FFFF) == 0)
             return VR.UL;
         if ((tag &amp; 0x00010000) != 0)
