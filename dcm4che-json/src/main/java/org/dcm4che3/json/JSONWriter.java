@@ -274,7 +274,12 @@ public class JSONWriter implements DicomInputHandler {
         gen.writeStartArray("Value");
         int vm = vr.vmOf(val);
         for (int i = 0; i < vm; i++) {
-            gen.write(vr.toDouble(val, bigEndian, i, 0));
+            try {
+                gen.write(vr.toDouble(val, bigEndian, i, 0));
+            } catch (NumberFormatException e) {
+                LOG.info("illegal {} value: {} - encoded as null", vr.name(), val);
+                gen.writeNull();
+            }
         }
         gen.writeEnd();
     }
@@ -283,7 +288,12 @@ public class JSONWriter implements DicomInputHandler {
         gen.writeStartArray("Value");
         int vm = vr.vmOf(val);
         for (int i = 0; i < vm; i++) {
-            gen.write(vr.toInt(val, bigEndian, i, 0));
+            try {
+                gen.write(vr.toInt(val, bigEndian, i, 0));
+            } catch (NumberFormatException e) {
+                LOG.info("illegal {} value: {} - encoded as null", vr.name(), val);
+                gen.writeNull();
+            }
         }
         gen.writeEnd();
     }
